@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from brping import Ping1D
+from sensor_msgs.msg import Range
 class s500_node(Node):
     def __init__(self):
         super().__init__("s500")
@@ -9,7 +10,8 @@ class s500_node(Node):
         # Node Parameters
         device_port = self.declare_parameter('device_port', '/dev/ttyACM0')
         baudrate = self.declare_parameter('baudrate', 115200)
-        frequency = self.declare_parameter('frequency', 10)
+        frequency = self.declare_parameter('frequency', 10) # Amount of times per second its published
+        sonar_topic = self.declare_parameter('sonar_topic', 'sonar')
         frame = self.declare_parameter('frame', 'sonar')
         fov = self.declare_parameter('fov', 0.3)
         min_range = self.declare_parameter('min_range', 0.5)
@@ -33,7 +35,15 @@ class s500_node(Node):
         elif comm_type == 'udp':
             print("UDP Connections not yet implemented. \n") 
         else:
-            print("Unknown error when attempting connection. Ensure the comm_type parameter is either SERIAL or UDP. \n")     
+            print("Unknown error when attempting connection. Ensure the comm_type parameter is either SERIAL or UDP. \n")
+
+        # ROS Publisher
+        self.publisher_ = self.create_publisher(Range, sonar_topic, 10)
+        self.timer = self.create_timer(1.0 / frequency, self.sonar_callback)
+    
+    def sonar_callback(self):
+        # Need to implement the interface between s500 and ping protocol
+        print('delete this line once implemented')
 
 def main(args=None):
     rclpy.init(args=args)
