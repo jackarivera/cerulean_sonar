@@ -7,7 +7,7 @@ class s500_node(Node):
         self.get_logger().info("Starting S500 Sonar Node...")
         
         # Node Parameters
-        device_port = self.declare_parameter('device_port', '/dev/ttyUSB0')
+        device_port = self.declare_parameter('device_port', '/dev/ttyACM0')
         baudrate = self.declare_parameter('baudrate', 115200)
         frequency = self.declare_parameter('frequency', 10)
         frame = self.declare_parameter('frame', 'sonar')
@@ -20,7 +20,20 @@ class s500_node(Node):
         sonar = Ping1D()
 
         if comm_type == 'serial':
-            sonar.connect_serial(device_port, baudrate)        
+            print("Attempting to connect to device at port %s.\n", device_port)
+            sonar.connect_serial(device_port, baudrate)
+
+            if sonar.initialize() is False:
+                print("Failed to connect to device %s over serial\n", device_port)
+                print("Shutting down this node...\n")
+                self.destroy_node()
+                rclpy.shutdown()
+            
+            print("Successfully connected to device at %s", device_port)
+        elif comm_type == 'udp':
+            print("UDP Connections not yet implemented. \n") 
+        else:
+            print("Unknown error when attempting connection. Ensure the comm_type parameter is either SERIAL or UDP. \n")     
 
 def main(args=None):
     rclpy.init(args=args)
