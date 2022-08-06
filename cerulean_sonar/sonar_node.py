@@ -13,7 +13,7 @@ class sonar_node(Node):
         self.get_logger().info("Starting S500 Sonar Node...")
     
         # Create dictionary of node parameters to easily pass into sonar object
-        params = {
+        parameters = {
             "device_port": self.declare_parameter('device_port', '/dev/ttyACM0'),
             "device_type": self.declare_parameter('device_type', 's500'), # rovmk2, rovmk2a (autosync), rovmk3, s500
             "baudrate": self.declare_parameter('baudrate', 115200),
@@ -28,14 +28,22 @@ class sonar_node(Node):
             "udp_port": self.declare_parameter('udp_port', 12345)
         }
 
-        if params.device_type == 's500':
-            sonar = s500_sonar(params)
-        elif params.device_type == 'rovmk2':
-            sonar = rovmk2_sonar(params, False)
-        elif params.device_type == 'rovmk2a':
-            sonar = rovmk2_sonar(params, True)
-        elif params.device_type == 'rovmk3':
-            sonar = rovmk3_sonar(params)
+        if parameters.device_type == 's500':
+            sonar = s500_sonar(parameters)
+            
+            if sonar.initialize() is False:
+                print("Failed to connect to device %s over serial\n", parameters.device_port)
+                print("Shutting down this node...\n")
+                self.destroy_node()
+                rclpy.shutdown()
+            else:
+                print("Successfully connected to device at %s", parameters.device_port)
+        elif parameters.device_type == 'rovmk2':
+            sonar = rovmk2_sonar(parameters, False)
+        elif parameters.device_type == 'rovmk2a':
+            sonar = rovmk2_sonar(parameters, True)
+        elif parameters.device_type == 'rovmk3':
+            sonar = rovmk3_sonar(parameters)
         else:
             print('Error when initializing sonar device type. Check config file for misspelled or non supported device_type')
 
