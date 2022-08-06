@@ -2,8 +2,8 @@ import rclpy
 from rclpy.node import Node
 from brping import Ping1D
 from sensor_msgs.msg import Range
-class s500_node(Node):
-    def __init__(self):
+class s500_sonar:
+    def __init__(self, params):
         super().__init__("s500")
         self.get_logger().info("Starting S500 Sonar Node...")
         
@@ -44,13 +44,3 @@ class s500_node(Node):
     def sonar_callback(self):
         # Need to implement the interface between s500 and ping protocol
         print('delete this line once implemented')
-
-def main(args=None):
-    rclpy.init(args=args)
-    node = s500_node()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
-
-if __name__ == "__main__":
-    main()
