@@ -4,7 +4,7 @@ package_name = 'cerulean_sonar'
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='1.0.0',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -13,14 +13,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='snuc',
+    maintainer='Jack Rivera',
     maintainer_email='jackarivera@gmail.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='ROS2 Package to interface with cerulean sonar products',
+    license='MIT License',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            's500 = cerulean_sonar.s500:main'
+            's500 = cerulean_sonar.sonar_node:main'
         ],
     },
 )
