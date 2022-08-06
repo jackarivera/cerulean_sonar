@@ -22,12 +22,17 @@ class s500_sonar:
             self.get_logger().info("Attempting to connect to device at %s:%s over udp.\n", params.udp_address)
             sonar.connect_udp(params.udp_address, params.udp_port)
         else:
-            self.get_logger().info("Unknown error when attempting connection. Ensure the comm_type parameter is either serial or udp. \n")
-
-        # ROS Publisher
-        self.publisher_ = self.create_publisher(Range, params.sonar_topic, 10)
-        self.timer = self.create_timer(1.0 / params.frequency, self.sonar_callback)
+            self.get_logger().info("Error when attempting connection. Ensure the comm_type parameter is either serial or udp. \n")
     
+    def initialize(self):
+        if sonar.initialize() is False:
+            return False
+        else:
+             # Create ROS Publisher if initalization succedeed 
+            self.publisher_ = self.create_publisher(Range, params.sonar_topic, 10)
+            self.timer = self.create_timer(1.0 / params.frequency, self.sonar_callback)
+            return True
+        
     def sonar_callback(self):
         data = sonar.get_distance()
         range_msg = Range()
@@ -42,9 +47,3 @@ class s500_sonar:
         self.get_logger().info(f"Distance: {range_msg.range: .4f}\tConfidence: {confidence: .2f}")
 
         
-    
-    def initialize(self):
-        if sonar.initialize() is False:
-            return False
-        else:
-            return True

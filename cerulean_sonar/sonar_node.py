@@ -28,6 +28,7 @@ class sonar_node(Node):
             "udp_port": self.declare_parameter('udp_port', 12345)
         }
 
+        # Create device type and attempt connection
         if parameters.device_type == 's500':
             sonar = s500_sonar(parameters)
             
