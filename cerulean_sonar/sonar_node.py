@@ -32,7 +32,10 @@ class sonar_node(Node):
             sonar = s500_sonar(parameters)
             
             if sonar.initialize() is False:
-                print("Failed to connect to device %s over serial\n", parameters.device_port)
+                if parameters.comm_type == "serial":
+                    print("Failed to connect to device %s over serial.\n", parameters.device_port)
+                elif parameters.comm_type == "udp":
+                    print("Failed to connect to device %s:%s over udp.\n", parameters.udp_address, parameters.udp_port)
                 print("Shutting down this node...\n")
                 self.destroy_node()
                 rclpy.shutdown()

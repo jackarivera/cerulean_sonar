@@ -22,7 +22,7 @@ class s500_sonar:
             self.get_logger().info("Attempting to connect to device at %s:%s over udp.\n", params.udp_address)
             sonar.connect_udp(params.udp_address, params.udp_port)
         else:
-            self.get_logger().info("Unknown error when attempting connection. Ensure the comm_type parameter is either SERIAL or UDP. \n")
+            self.get_logger().info("Unknown error when attempting connection. Ensure the comm_type parameter is either serial or udp. \n")
 
         # ROS Publisher
         self.publisher_ = self.create_publisher(Range, params.sonar_topic, 10)
