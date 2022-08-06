@@ -2,7 +2,7 @@
 ROS driver for interfacing with cerulean sonar devices.
 
 Supported devices:
-S500 [PLANNED]
+S500 [Minimally Implemented]
 Rov Locator MkII [PLANNED]
 Rov Locator MkIII [PLANNED]
 
