@@ -33,14 +33,15 @@ class sonar_node(Node):
             
             if sonar.initialize() is False:
                 if parameters.comm_type == "serial":
-                    print("Failed to connect to device %s over serial.\n", parameters.device_port)
+                    self.get_logger().info("Failed to connect to device %s over serial.\n", parameters.device_port)
                 elif parameters.comm_type == "udp":
-                    print("Failed to connect to device %s:%s over udp.\n", parameters.udp_address, parameters.udp_port)
-                print("Shutting down this node...\n")
+                    self.get_logger().info("Failed to connect to device %s:%s over udp.\n", parameters.udp_address, parameters.udp_port)
+                
+                self.get_logger().info("Shutting down this node...\n")
                 self.destroy_node()
                 rclpy.shutdown()
             else:
-                print("Successfully connected to device at %s", parameters.device_port)
+                self.get_logger().info("Successfully connected to device at %s", parameters.device_port)
         elif parameters.device_type == 'rovmk2':
             sonar = rovmk2_sonar(parameters, False)
         elif parameters.device_type == 'rovmk2a':
@@ -48,7 +49,7 @@ class sonar_node(Node):
         elif parameters.device_type == 'rovmk3':
             sonar = rovmk3_sonar(parameters)
         else:
-            print('Error when initializing sonar device type. Check config file for misspelled or non supported device_type')
+            self.get_logger().info('Error when initializing sonar device type. Check config file for misspelled or non supported device_type')
 
        
 
