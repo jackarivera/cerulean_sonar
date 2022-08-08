@@ -42,7 +42,7 @@ class rovmk2_sonar:
             self.publisher_ = node.create_publisher(Range, params.get("sonar_topic"), 10)
             self.timer = node.create_timer(1.0 / params.get("frequency"), self.sonar_callback)
             return True
-            
+
     def checkUdpComm(self):
         if not comm.isOpen():
             logger.info("Error. UDP communication could not be established.\n")
@@ -54,5 +54,32 @@ class rovmk2_sonar:
             return True
 
     def sonar_callback(self):
-        data = comm.readByte()
-        logger.info(data)
+        data = self.parseRovData(comm.readByte())
+        logger.info("Message Type: %s" % data.get("mt"))
+        logger.info("Slant Range: %s" % data.get("sr"))
+        logger.info("Euler Roll: %s | Euler Pitch: %s | Euler Yaw: %s" % (data.get("er"), data.get("ep"), data.get("ey")))
+    
+    def parseRovData(self, data):
+        mt, ab, ac, ae, sr, tb, cb, te, er, ep, ey, ch, db, ah, ag, ls, im, oc, hh = data.split(',')
+        msg = {
+            "mt": mt,
+            "ab": ab,
+            "ac": ac,
+            "ae": ae,
+            "sr": sr,
+            "tb": tb,
+            "cb": cb,
+            "te": te,
+            "er": er,
+            "ep": ep,
+            "ey": ey,
+            "ch": ch,
+            "db": db,
+            "ah": ah,
+            "ag": ag,
+            "ls": ls,
+            "im": im,
+            "oc": oc,
+            "hh": hh
+        }
+        return msg
