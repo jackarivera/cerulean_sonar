@@ -1,6 +1,5 @@
 from ast import FormattedValue
 from asyncio.log import logger
-from platform import node
 import rclpy
 from rclpy.node import Node
 from brping import Ping1D
