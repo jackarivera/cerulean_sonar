@@ -10,12 +10,12 @@ from sensor_msgs.msg import Range
 class sonar_node(Node):
     def __init__(self):
         super().__init__("sonar_node")
-        self.get_logger().info("Starting S500 Sonar Node...")
+        self.get_logger().info("Starting Sonar Node...")
     
         # Create dictionary of node parameters to easily pass into sonar object
         parameters = {
-            "device_port": self.declare_parameter('device_port', '/dev/ttyACM0').value,
-            "device_type": self.declare_parameter('device_type', 's500').value, # rovmk2, rovmk2a (autosync), rovmk3, s500
+            "device_port": self.declare_parameter('device_port', '/dev/ttyUSB0').value,
+            "device_type": self.declare_parameter('device_type', 'rovmk2').value, # rovmk2, rovmk3, s500
             "baudrate": self.declare_parameter('baudrate', 115200).value,
             "frequency": self.declare_parameter('frequency', 10).value, # Amount of times per second its published
             "sonar_topic": self.declare_parameter('sonar_topic', 'sonar').value,
@@ -46,8 +46,17 @@ class sonar_node(Node):
                 self.get_logger().info("Successfully connected to device at %s" % parameters.get("device_port"))
         elif parameters.get("device_type") == 'rovmk2':
             sonar = rovmk2_sonar(parameters, self, False)
-        elif parameters.get("device_type") == 'rovmk2a':
-            sonar = rovmk2_sonar(parameters, self, True)
+
+            if parameters.get("comm_type") == "serial":
+                if sonar.checkSerialComm() is False:
+                    self.get_logger().info("Shutting down this node...\n")
+                    self.destroy_node()
+                    rclpy.shutdown()
+            elif parameters.get("comm_type") == "udp":
+                if sonar.checkUdpComm() is False:
+                    self.get_logger().info("Shutting down this node...\n")
+                    self.destroy_node()
+                    rclpy.shutdown()
         elif parameters.get("device_type") == 'rovmk3':
             sonar = rovmk3_sonar(parameters, self)
         else:
