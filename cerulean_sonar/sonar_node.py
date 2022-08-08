@@ -3,8 +3,6 @@ from cerulean_sonar.rovmk2 import rovmk2_sonar
 from cerulean_sonar.rovmk3 import rovmk3_sonar
 import rclpy
 from rclpy.node import Node
-from brping import Ping1D
-from sensor_msgs.msg import Range
 
 
 class sonar_node(Node):
@@ -14,8 +12,8 @@ class sonar_node(Node):
     
         # Create dictionary of node parameters to easily pass into sonar object
         parameters = {
-            "device_port": self.declare_parameter('device_port', '/dev/ttyUSB0').value,
-            "device_type": self.declare_parameter('device_type', 'rovmk2').value, # rovmk2, rovmk3, s500
+            "device_port": self.declare_parameter('device_port', '/dev/ttyACM0').value,
+            "device_type": self.declare_parameter('device_type', 's500').value, # rovmk2, rovmk3, s500
             "baudrate": self.declare_parameter('baudrate', 115200).value,
             "frequency": self.declare_parameter('frequency', 10).value, # Amount of times per second its published
             "sonar_topic": self.declare_parameter('sonar_topic', 'sonar').value,
