@@ -20,6 +20,5 @@
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>ping360_sonar_msgs</depend>
-  <depend>python3-bluerobotics-ping-pip</depend>
   <depend>pyserial</depend>
 </package>

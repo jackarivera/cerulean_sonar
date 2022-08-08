@@ -1,11 +1,12 @@
 from setuptools import setup
 
 package_name = 'cerulean_sonar'
+package_sub = 'brping'
 
 setup(
     name=package_name,
     version='1.0.0',
-    packages=[package_name],
+    packages=[package_name, package_sub],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
