@@ -45,11 +45,11 @@ class sonar_node(Node):
             else:
                 self.get_logger().info("Successfully connected to device at %s" % parameters.get("device_port"))
         elif parameters.get("device_type") == 'rovmk2':
-            sonar = rovmk2_sonar(parameters, False)
+            sonar = rovmk2_sonar(parameters, self, False)
         elif parameters.get("device_type") == 'rovmk2a':
-            sonar = rovmk2_sonar(parameters, True)
+            sonar = rovmk2_sonar(parameters, self, True)
         elif parameters.get("device_type") == 'rovmk3':
-            sonar = rovmk3_sonar(parameters)
+            sonar = rovmk3_sonar(parameters, self)
         else:
             self.get_logger().info('Error when initializing sonar device type. Check config file for misspelled or non supported device_type')
 
