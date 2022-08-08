@@ -21,7 +21,7 @@ class comm_serial:
         comm.close()
 
     def readByte(self):
-        place = "holder"
+        return comm.readline()
 
     def isOpen(self):
         return comm.is_open
