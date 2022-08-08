@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            's500 = cerulean_sonar.sonar_node:main'
+            'sonar_node = cerulean_sonar.sonar_node:main'
         ],
     },
 )
