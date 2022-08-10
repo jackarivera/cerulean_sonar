@@ -3,11 +3,9 @@ ROS driver for publishing data from cerulean sonar devices. This package simply 
 
 # Supported devices and what has been implemented:
 
-S500 [Minimally Implemented] - Publishes range messages with s500 data
+S500 [Minimally Implemented] - Publishes range messages with s500 data in mm
 
-Rov Locator MkII [PLANNED] - n/a
 
-Rov Locator MkIII [PLANNED] - n/a
 
 This package is in the beta stages and is still being written. There may be little functionality or no functionality.
 
@@ -20,6 +18,7 @@ This package is in the beta stages and is still being written. There may be litt
 cd <ros_workspace>/src
 git clone https://github.com/jackarivera/cerulean_sonar.git
 cd ..
+rosdep install --from-paths src --ignore-src
 colcon build
 ```
 
