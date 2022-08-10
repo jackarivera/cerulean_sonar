@@ -54,6 +54,6 @@ class s500_sonar:
         range_msg.range = distance / 1.0 # returns distance in mm
         #confidence = data["confidence"]
         self.publisher_.publish(range_msg)
-        print(distance)
+        #print(distance)
         #print(sos)
         
