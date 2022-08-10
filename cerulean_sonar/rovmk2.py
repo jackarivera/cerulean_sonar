@@ -1,3 +1,4 @@
+import ast
 from cerulean_sonar.comm_serial import comm_serial
 from cerulean_sonar.comm_udp import comm_udp
 import rclpy
@@ -5,6 +6,7 @@ from rclpy.node import Node
 from brping import Ping1D
 from sensor_msgs.msg import Range
 import serial
+import pynmea2
 
 class rovmk2_sonar:
     def __init__(self, parameters, sonar_node, autosyncEnabled):
@@ -54,32 +56,12 @@ class rovmk2_sonar:
             return True
 
     def sonar_callback(self):
-        data = self.parseRovData(comm.readByte())
-        logger.info("Message Type: %s" % data.get("mt"))
-        logger.info("Slant Range: %s" % data.get("sr"))
-        logger.info("Euler Roll: %s | Euler Pitch: %s | Euler Yaw: %s" % (data.get("er"), data.get("ep"), data.get("ey")))
+        data = self.parseRovData(str(comm.readByte().decode()))
+        print(data)
+
     
     def parseRovData(self, data):
-        mt, ab, ac, ae, sr, tb, cb, te, er, ep, ey, ch, db, ah, ag, ls, im, oc, hh = data.split(',')
-        msg = {
-            "mt": mt,
-            "ab": ab,
-            "ac": ac,
-            "ae": ae,
-            "sr": sr,
-            "tb": tb,
-            "cb": cb,
-            "te": te,
-            "er": er,
-            "ep": ep,
-            "ey": ey,
-            "ch": ch,
-            "db": db,
-            "ah": ah,
-            "ag": ag,
-            "ls": ls,
-            "im": im,
-            "oc": oc,
-            "hh": hh
-        }
-        return msg
+        split = data.split(',')
+        # Handle data from ROVL below. The data is split into a list at each comma separating the message into each component.
+        return split
+        
