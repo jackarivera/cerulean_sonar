@@ -159,7 +159,7 @@ class PingDevice(object):
     # @param timeout: The timeout period in seconds to wait
     #
     # @return PingMessage: the message from the device if it is received within timeout period, None otherwise
-    def wait_message(self, message_ids, timeout=0.5):
+    def wait_message(self, message_ids, timeout=1.2):
         tstart = time.time()
         while time.time() < tstart + timeout:
             msg = self.read()
