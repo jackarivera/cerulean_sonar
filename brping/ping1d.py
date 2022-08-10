@@ -242,7 +242,7 @@ class Ping1D(PingDevice):
     # scan_start: Units: mm; The beginning of the scan region in mm from the transducer.\n
     # scan_length: Units: mm; The length of the scan region.\n
     # gain_setting: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
-    # profile_data: An array of return strength measurements taken at regular intervals across the scan region.\n
+    # profile_data: An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range.\n
     def get_profile(self):
         if self.legacyRequest(definitions.PING1D_PROFILE) is None:
             return None
@@ -254,7 +254,7 @@ class Ping1D(PingDevice):
             "scan_start": self._scan_start,  # Units: mm; The beginning of the scan region in mm from the transducer.
             "scan_length": self._scan_length,  # Units: mm; The length of the scan region.
             "gain_setting": self._gain_setting,  # The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
-            "profile_data": self._profile_data,  # An array of return strength measurements taken at regular intervals across the scan region.
+            "profile_data": self._profile_data,  # An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range.
         })
         return data
 
@@ -437,7 +437,7 @@ class Ping1D(PingDevice):
     # Send the message to write the device parameters, then read the values back from the device\n
     #
     # @param scan_start - Units: mm; 
-    # @param scan_length - Units: mm; The length of the scan range.
+    # @param scan_length - Units: mm; The length of the scan range. Minimum 1000.
     #
     # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_range(self, scan_start, scan_length, verify=True):
@@ -472,7 +472,7 @@ class Ping1D(PingDevice):
             return False
         # Read back the data and check that changes have been applied
         if (verify
-                and (self._speed_of_sound != speed_of_sound)):
+                and (self.get_speed_of_sound != speed_of_sound)):
             return False
         return True  # success
 
