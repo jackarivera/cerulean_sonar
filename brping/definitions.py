@@ -490,6 +490,340 @@ payload_dict_ping360 = {
 
 }
 
+PINGHF_SET_DEVICE_ID = 1000
+PINGHF_SET_RANGE = 1001
+PINGHF_SET_SPEED_OF_SOUND = 1002
+PINGHF_SET_MODE_AUTO = 1003
+PINGHF_SET_PING_INTERVAL = 1004
+PINGHF_SET_GAIN_SETTING = 1005
+PINGHF_SET_PING_ENABLE = 1006
+PINGHF_FIRMWARE_VERSION = 1200
+PINGHF_DEVICE_ID = 1201
+PINGHF_VOLTAGE_5 = 1202
+PINGHF_SPEED_OF_SOUND = 1203
+PINGHF_RANGE = 1204
+PINGHF_MODE_AUTO = 1205
+PINGHF_PING_INTERVAL = 1206
+PINGHF_GAIN_SETTING = 1207
+PINGHF_TRANSMIT_DURATION = 1208
+PINGHF_GENERAL_INFO = 1210
+PINGHF_DISTANCE_SIMPLE = 1211
+PINGHF_DISTANCE = 1212
+PINGHF_PROCESSOR_TEMPERATURE = 1213
+PINGHF_PCB_TEMPERATURE = 1214
+PINGHF_PING_ENABLE = 1215
+PINGHF_PROFILE = 1300
+PINGHF_PROFILE6_T = 1308
+PINGHF_DISTANCE2 = 1223
+PINGHF_GOTO_BOOTLOADER = 1100
+PINGHF_CONTINUOUS_START = 1400
+PINGHF_CONTINUOUS_STOP = 1401
+
+# variable length fields are formatted with 's', and always occur at the end of the payload
+# the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
+# see PingMessage.get_payload_format()
+payload_dict_pinghf = {
+    PINGHF_SET_DEVICE_ID: {
+        "name": "set_device_id",
+        "format": "B",
+        "field_names": (
+             "device_id",
+            ),
+        "payload_length": 1
+    },
+
+    PINGHF_SET_RANGE: {
+        "name": "set_range",
+        "format": "II",
+        "field_names": (
+             "scan_start",
+             "scan_length",
+            ),
+        "payload_length": 8
+    },
+
+    PINGHF_SET_SPEED_OF_SOUND: {
+        "name": "set_speed_of_sound",
+        "format": "I",
+        "field_names": (
+             "speed_of_sound",
+            ),
+        "payload_length": 4
+    },
+
+    PINGHF_SET_MODE_AUTO: {
+        "name": "set_mode_auto",
+        "format": "B",
+        "field_names": (
+             "mode_auto",
+            ),
+        "payload_length": 1
+    },
+
+    PINGHF_SET_PING_INTERVAL: {
+        "name": "set_ping_interval",
+        "format": "H",
+        "field_names": (
+             "ping_interval",
+            ),
+        "payload_length": 2
+    },
+
+    PINGHF_SET_GAIN_SETTING: {
+        "name": "set_gain_setting",
+        "format": "B",
+        "field_names": (
+             "gain_setting",
+            ),
+        "payload_length": 1
+    },
+
+    PINGHF_SET_PING_ENABLE: {
+        "name": "set_ping_enable",
+        "format": "B",
+        "field_names": (
+             "ping_enabled",
+            ),
+        "payload_length": 1
+    },
+
+    PINGHF_FIRMWARE_VERSION: {
+        "name": "firmware_version",
+        "format": "BBHH",
+        "field_names": (
+             "device_type",
+             "device_model",
+             "firmware_version_major",
+             "firmware_version_minor",
+            ),
+        "payload_length": 6
+    },
+
+    PINGHF_DEVICE_ID: {
+        "name": "device_id",
+        "format": "B",
+        "field_names": (
+             "device_id",
+            ),
+        "payload_length": 1
+    },
+
+    PINGHF_VOLTAGE_5: {
+        "name": "voltage_5",
+        "format": "H",
+        "field_names": (
+             "voltage_5",
+            ),
+        "payload_length": 2
+    },
+
+    PINGHF_SPEED_OF_SOUND: {
+        "name": "speed_of_sound",
+        "format": "I",
+        "field_names": (
+             "speed_of_sound",
+            ),
+        "payload_length": 4
+    },
+
+    PINGHF_RANGE: {
+        "name": "range",
+        "format": "II",
+        "field_names": (
+             "scan_start",
+             "scan_length",
+            ),
+        "payload_length": 8
+    },
+
+    PINGHF_MODE_AUTO: {
+        "name": "mode_auto",
+        "format": "B",
+        "field_names": (
+             "mode_auto",
+            ),
+        "payload_length": 1
+    },
+
+    PINGHF_PING_INTERVAL: {
+        "name": "ping_interval",
+        "format": "H",
+        "field_names": (
+             "ping_interval",
+            ),
+        "payload_length": 2
+    },
+
+    PINGHF_GAIN_SETTING: {
+        "name": "gain_setting",
+        "format": "I",
+        "field_names": (
+             "gain_setting",
+            ),
+        "payload_length": 4
+    },
+
+    PINGHF_TRANSMIT_DURATION: {
+        "name": "transmit_duration",
+        "format": "H",
+        "field_names": (
+             "transmit_duration",
+            ),
+        "payload_length": 2
+    },
+
+    PINGHF_GENERAL_INFO: {
+        "name": "general_info",
+        "format": "HHHHBB",
+        "field_names": (
+             "firmware_version_major",
+             "firmware_version_minor",
+             "voltage_5",
+             "ping_interval",
+             "gain_setting",
+             "mode_auto",
+            ),
+        "payload_length": 10
+    },
+
+    PINGHF_DISTANCE_SIMPLE: {
+        "name": "distance_simple",
+        "format": "IB",
+        "field_names": (
+             "distance",
+             "confidence",
+            ),
+        "payload_length": 5
+    },
+
+    PINGHF_DISTANCE: {
+        "name": "distance",
+        "format": "IHHIIII",
+        "field_names": (
+             "distance",
+             "confidence",
+             "transmit_duration",
+             "ping_number",
+             "scan_start",
+             "scan_length",
+             "gain_setting",
+            ),
+        "payload_length": 24
+    },
+
+    PINGHF_PROCESSOR_TEMPERATURE: {
+        "name": "processor_temperature",
+        "format": "H",
+        "field_names": (
+             "processor_temperature",
+            ),
+        "payload_length": 2
+    },
+
+    PINGHF_PCB_TEMPERATURE: {
+        "name": "pcb_temperature",
+        "format": "H",
+        "field_names": (
+             "pcb_temperature",
+            ),
+        "payload_length": 2
+    },
+
+    PINGHF_PING_ENABLE: {
+        "name": "ping_enable",
+        "format": "B",
+        "field_names": (
+             "ping_enabled",
+            ),
+        "payload_length": 1
+    },
+
+    PINGHF_PROFILE: {
+        "name": "profile",
+        "format": "IHHIIIIH",
+        "field_names": (
+             "distance",
+             "confidence",
+             "transmit_duration",
+             "ping_number",
+             "scan_start",
+             "scan_length",
+             "gain_setting",
+             "profile_data_length",
+             "profile_data",
+            ),
+        "payload_length": 26
+    },
+
+    PINGHF_PROFILE6_T: {
+        "name": "profile6_t",
+        "format": "IIIIIIIIBBBBHH",
+        "field_names": (
+             "ping_number",
+             "start_mm",
+             "length_mm",
+             "start_ping_hz",
+             "end_ping_hz",
+             "adc_sample_hz",
+             "timestep_msec",
+             "spare2",
+             "ping_duration_sec",
+             "analog_gain",
+             "max_pwr",
+             "min_pwr",
+             "step_db",
+             "fspare2",
+             "is_db",
+             "gain_index",
+             "decimation",
+             "reserved",
+             "num_results",
+             "pwr_results",
+            ),
+        "payload_length": 64
+    },
+
+    PINGHF_DISTANCE2: {
+        "name": "distance2",
+        "format": "IIHBBI",
+        "field_names": (
+             "distance_mm",
+             "avg_distance_mm",
+             "reserved",
+             "confidence",
+             "avg_confidence",
+             "timestamp",
+            ),
+        "payload_length": 16
+    },
+
+    PINGHF_GOTO_BOOTLOADER: {
+        "name": "goto_bootloader",
+        "format": "",
+        "field_names": (
+            ),
+        "payload_length": 0
+    },
+
+    PINGHF_CONTINUOUS_START: {
+        "name": "continuous_start",
+        "format": "H",
+        "field_names": (
+             "id",
+            ),
+        "payload_length": 2
+    },
+
+    PINGHF_CONTINUOUS_STOP: {
+        "name": "continuous_stop",
+        "format": "H",
+        "field_names": (
+             "id",
+            ),
+        "payload_length": 2
+    },
+
+}
 PINGMESSAGE_UNDEFINED = 0
 payload_dict_all = {
     PINGMESSAGE_UNDEFINED: {
@@ -502,3 +836,4 @@ payload_dict_all = {
 payload_dict_all.update(payload_dict_common)
 payload_dict_all.update(payload_dict_ping1d)
 payload_dict_all.update(payload_dict_ping360)
+payload_dict_all.update(payload_dict_pinghf)
