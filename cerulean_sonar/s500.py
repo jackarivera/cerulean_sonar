@@ -1,4 +1,4 @@
-from brping import ping1d
+from brping import pinghf
 from sensor_msgs.msg import Range
 class s500_sonar:
     def __init__(self, parameters, sonar_node):
@@ -17,8 +17,8 @@ class s500_sonar:
         
         # Sonar initialization
         global sonar
-        sonar = ping1d.Ping1D()
-
+        sonar = pinghf.Pinghf()
+        
         if params.get("comm_type") == 'serial':
             logger.info("Attempting to connect to device at port %s over serial.\n" % params.get("device_port"))
             sonar.connect_serial(params.get("device_port"), params.get("baudrate"))
@@ -38,16 +38,22 @@ class s500_sonar:
             return True
         
     def sonar_callback(self):
-        data = sonar.get_distance_simple()
+        distance = -1.0 # Set to -1 for people to be able to handle if we aren't able to get a range distance
+
+        try:
+            distance = sonar.get_profile()["distance"]# Try and get distance from sonar profile
+        except:
+            logger.info("Unable to get sonar measurement before timeout. Try increasing timeout in ping1d file. Returning -1.0 for distance")
+        #sos = sonar.get_distance2()
         range_msg = Range()
         range_msg.header.frame_id = params.get("frame")
         range_msg.radiation_type = 1
         range_msg.field_of_view = params.get("fov")
         range_msg.min_range = params.get("min_range")
         range_msg.max_range = params.get("max_range")
-        range_msg.range = data["distance"] / 1.0
-        confidence = data["confidence"]
+        range_msg.range = distance / 1.0 # returns distance in mm
+        #confidence = data["confidence"]
         self.publisher_.publish(range_msg)
-        logger.info(f"Distance: {range_msg.range: .4f}\tConfidence: {confidence: .2f}")
-
+        print(distance)
+        #print(sos)
         
